@@ -15,4 +15,13 @@ class BaseController extends Controller {
 		}
 	}
 
+    protected function validateAndReturnErrors($data, $rules)
+    {
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails())
+            return $validator->messages();
+        else
+            return null;
+    }
+
 }
