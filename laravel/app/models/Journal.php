@@ -1,6 +1,6 @@
 <?php
 
-class Journal extends Enloquent {
+class Journal extends Eloquent {
 
     /**
      * The database table used by the model.
@@ -13,4 +13,8 @@ class Journal extends Enloquent {
         return $this->belongsTo('User');
     }
 
+    public function scopeOfVolume($query, $volume)
+    {
+        return $query->whereVolume($volume);
+    }
 }

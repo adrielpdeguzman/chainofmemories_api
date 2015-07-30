@@ -16,10 +16,11 @@ class CreateUsersTable extends Migration {
         {
             $table->engine = 'MYISAM';
             $table->increments('id');
-            $table->string('first_name', 35);
-            $table->string('last_name', 35);
             $table->string('username', 255);
             $table->string('password');
+            $table->string('email', 255);
+            $table->string('first_name', 35);
+            $table->string('last_name', 35);
             $table->datetime('last_login');
             $table->rememberToken();
             $table->timestamps();

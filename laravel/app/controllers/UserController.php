@@ -117,7 +117,7 @@ class UserController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-        User::findOrFail($id)->delete();
+        User::destroy($id);
 
         return Response::json(array(
             'message'   => 'The resource has been deleted'

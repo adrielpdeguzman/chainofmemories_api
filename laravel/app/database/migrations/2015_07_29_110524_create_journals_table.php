@@ -18,6 +18,8 @@ class CreateJournalsTable extends Migration {
 			$table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->date('publish_date');
+            $table->integer('volume');
+            $table->integer('day');
             $table->text('contents');
             $table->text('special_events');
 			$table->timestamps();
