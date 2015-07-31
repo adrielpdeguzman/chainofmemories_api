@@ -11,7 +11,7 @@ class JournalController extends \BaseController {
 	 */
 	public function index()
 	{
-		$journals = Journal::orderBy('publish_date')->all();
+		$journals = Journal::orderBy('publish_date')->get();
 
         return Response::json($journals, 200);
 	}
@@ -125,6 +125,19 @@ class JournalController extends \BaseController {
         ), 204);
 	}
 
+    public function search()
+    {
+        $text = "%" . strtolower(Request::get('text')) . "%";
+        $volume = Request::get('volume');
+
+        $journals = Journal::ofVolume($volume)
+                  ->whereRaw('lower(contents) like ?', array($text))
+                  ->orderBy('publish_date')
+                  ->get();
+
+        return Response::json($journals, 200);
+    }
+
     public function volume($volume)
     {
         $journals = Journal::ofVolume($volume)->orderBy('publish_date')->get();
@@ -134,7 +147,7 @@ class JournalController extends \BaseController {
 
     public function random()
     {
-        $journal = Journal::orderByRaw('RAND()')->first()->toArray();
+        $journal = Journal::orderByRaw('RAND()')->first();
 
         return Response::json($journal, 200);
     }

@@ -15,6 +15,11 @@ class Journal extends Eloquent {
 
     public function scopeOfVolume($query, $volume)
     {
-        return $query->whereVolume($volume);
+        return $query
+                ->where(function($query) use ($volume)
+                {
+                    $query->whereVolume($volume)
+                          ->orWhereRaw("$volume = 0");
+                });
     }
 }

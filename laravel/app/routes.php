@@ -18,6 +18,7 @@ Route::group(array('prefix' => 'api/v1'), function()
     Route::group(array('prefix' => 'journals'), function()
     {
         Route::get('random', 'JournalController@random');
+        Route::get('search', 'JournalController@search');
         Route::get('volume/{volume}', 'JournalController@volume');
     });
     Route::resource('journals', 'JournalController');
