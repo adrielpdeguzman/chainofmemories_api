@@ -24,6 +24,7 @@ class CreateJournalsTable extends Migration {
             $table->text('special_events');
 			$table->timestamps();
 
+            $table->unique(array('user_id', 'publish_date'));
             $table->foreign('user_id')->references('id')->on('users');
 		});
 	}

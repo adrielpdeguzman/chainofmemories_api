@@ -52,12 +52,12 @@ class JournalTableSeeder extends Seeder {
 
         $faker = Faker\Factory::create();
 
-        for ($i = 0; $i < 50; $i++)
+        foreach (range(1, 50) as $index)
         {
             $journal = new Journal();
 
             $journal->user_id = $faker->randomDigit();
-            $journal->publish_date = Carbon::instance($faker->dateTimeThisYear());
+            $journal->publish_date = Carbon::instance($faker->dateTimeBetween($startDate = Config::get('constants.ANNIVERSARY')));
             $journal->volume = $journal->publish_date->diffInMonths(Config::get('constants.ANNIVERSARY')) + (Config::get('constants.ANNIVERSARY')->day != $journal->publish_date->day ? 2 : 3);
             $journal->day = $journal->publish_date->diffInDays(Config::get('constants.ANNIVERSARY')) + 1;
             $journal->contents = implode("\n\n", $faker->paragraphs(5));

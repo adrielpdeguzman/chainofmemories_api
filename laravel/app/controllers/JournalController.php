@@ -26,7 +26,7 @@ class JournalController extends \BaseController {
 	{
 		$rules = array(
             'user_id'    => 'required|exists:users,id',
-            'publish_date'    => 'required|date',
+            'publish_date'    => 'required|date|unique_with:journals,user_id,publish_date',
             'contents'      => 'required',
         );
 
