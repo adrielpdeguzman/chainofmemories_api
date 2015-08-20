@@ -11,17 +11,23 @@
 |
 */
 
-Route::group(array('prefix' => 'api/v1'), function()
+Route::group(['prefix' => 'api/v1'], function()
 {
-    Route::resource('users', 'UserController');
+    Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
 
-    Route::group(array('prefix' => 'journals'), function()
+    Route::group(['before' => 'basic.once'], function()
     {
-        Route::get('random', 'JournalController@random');
-        Route::get('search', 'JournalController@search');
-        Route::get('volume/{volume}', 'JournalController@volume');
+        Route::group(['prefix' => 'journals'], function()
+        {
+            Route::get('random', ['uses' => 'JournalController@random', 'as' => 'api.v1.journals.random']);
+            Route::get('search', ['uses' => 'JournalController@search', 'as' => 'api.v1.journals.search']);
+            Route::get('volume/{volume}', ['uses' => 'JournalController@volume', 'as' => 'api.v1.journals.volume']);
+        });
+        Route::resource('journals', 'JournalController', ['except' => ['create', 'edit']]);
     });
-    Route::resource('journals', 'JournalController');
+
+    // Route::post('sessions', ['uses' => 'SessionController@store', 'as' => 'api.v1.sessions.login']);
+    // Route::delete('sessions', ['uses' => 'SessionController@destroy', 'as' => 'api.v1.sessions.logout']);
 });
 
 Route::get('/', function()

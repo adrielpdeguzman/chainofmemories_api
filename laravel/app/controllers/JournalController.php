@@ -98,6 +98,12 @@ class JournalController extends \BaseController {
         }
 
         $journal = Journal::findOrFail($id);
+
+        if(Auth::user() != $journal->user)
+        {
+            return Response::json(['message' => 'Unauthorized operation'], 401);
+        }
+
         $journal->contents = $request['contents'];
         $journal->special_events = array_key_exists('special_events', $request) ? $request['special_events'] : '';
 
@@ -118,11 +124,16 @@ class JournalController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+        if(Auth::user() != Journal::findOrFail($id)->user)
+        {
+            return Response::json(['message' => 'Unauthorized operation'], 401);
+        }
+
 		Journal::destroy($id);
 
-        return Response::json(array(
+        return Response::json([
             'message'   => 'The resource has been deleted'
-        ), 204);
+        ], 200);
 	}
 
     public function search()
