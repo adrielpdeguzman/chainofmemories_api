@@ -26,7 +26,7 @@ Route::group(['prefix' => 'api/v1'], function()
         Route::resource('journals', 'JournalController', ['except' => ['create', 'edit']]);
     });
 
-    // Route::post('sessions', ['uses' => 'SessionController@store', 'as' => 'api.v1.sessions.login']);
+    Route::post('sessions', ['uses' => 'SessionController@store', 'as' => 'api.v1.sessions.login']);
     // Route::delete('sessions', ['uses' => 'SessionController@destroy', 'as' => 'api.v1.sessions.logout']);
 });
 
