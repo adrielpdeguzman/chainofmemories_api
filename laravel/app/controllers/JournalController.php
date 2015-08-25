@@ -25,7 +25,6 @@ class JournalController extends \BaseController {
 	public function store()
 	{
 		$rules = array(
-            'user_id'    => 'required|exists:users,id',
             'publish_date'    => 'required|date|unique_with:journals,user_id,publish_date',
             'contents'      => 'required',
         );
@@ -43,7 +42,7 @@ class JournalController extends \BaseController {
         }
 
         $journal = new Journal();
-        $journal->user_id = $request['user_id'];
+        $journal->user_id = Auth::id();
         $journal->publish_date = Carbon::parse($request['publish_date']);
         $journal->volume = $journal->publish_date->diffInMonths(Config::get('constants.ANNIVERSARY')) + (Config::get('constants.ANNIVERSARY')->day != $journal->publish_date->day ? 2 : 3);
         $journal->day = $journal->publish_date->diffInDays(Config::get('constants.ANNIVERSARY')) + 1;
@@ -161,5 +160,35 @@ class JournalController extends \BaseController {
         $journal = Journal::orderByRaw('RAND()')->first();
 
         return Response::json($journal, 200);
+    }
+
+    public function getDatesWithoutEntry()
+    {
+        $journals = Auth::user()->journals->toArray();
+        $dates_without_entry = [];
+        $dates_with_entry = [];
+
+        foreach ($journals as $journal)
+        {
+            array_push($dates_with_entry, $journal['publish_date']);
+        }
+
+        $period = new DatePeriod(
+             new DateTime(Config::get('constants.ANNIVERSARY')),
+             new DateInterval('P1D'),
+             new DateTime(Carbon::now())
+        );
+
+        foreach ($period as $date)
+        {
+            $formatted_date = $date->format('Y-m-d');
+
+            if (! in_array($formatted_date, $dates_with_entry))
+            {
+                array_push($dates_without_entry, $formatted_date);
+            }
+        }
+
+        return Response::json($dates_without_entry, 200);
     }
 }

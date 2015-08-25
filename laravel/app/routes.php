@@ -22,6 +22,7 @@ Route::group(['prefix' => 'api/v1'], function()
             Route::get('random', ['uses' => 'JournalController@random', 'as' => 'api.v1.journals.random']);
             Route::get('search', ['uses' => 'JournalController@search', 'as' => 'api.v1.journals.search']);
             Route::get('volume/{volume}', ['uses' => 'JournalController@volume', 'as' => 'api.v1.journals.volume']);
+            Route::get('getDatesWithoutEntry', ['uses' => 'JournalController@getDatesWithoutEntry', 'as' => 'api.v1.journals.dates_without_entry']);
         });
         Route::resource('journals', 'JournalController', ['except' => ['create', 'edit']]);
     });
