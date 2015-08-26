@@ -12,7 +12,7 @@ class SessionController extends \BaseController {
         $username = Request::get('username');
         $password = Request::get('password');
 
-        if (Auth::attempt(array('username' => $username, 'password' => $password)))
+        if (Auth::attempt(['username' => $username, 'password' => $password]))
         {
 
             return Response::json(array(

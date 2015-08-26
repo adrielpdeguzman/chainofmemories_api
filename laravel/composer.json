@@ -6,7 +6,8 @@
 	"require": {
 		"laravel/framework": "4.2.*",
 		"fzaninotto/faker": "^1.5",
-		"felixkiss/uniquewith-validator": "1.*"
+		"felixkiss/uniquewith-validator": "1.*",
+        "lucadegasperi/oauth2-server-laravel": "^3.0"
 	},
 	"autoload": {
 		"classmap": [
