@@ -21,8 +21,8 @@ Route::group(['prefix' => 'api/v1'], function()
     {
         Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
 
-        Route::group(['before' => 'basic.once'], function()
-        {
+        // Route::group(['before' => 'basic.once'], function()
+        // {
             Route::group(['prefix' => 'journals'], function()
             {
                 Route::get('random', ['uses' => 'JournalController@random', 'as' => 'api.v1.journals.random']);
@@ -31,7 +31,7 @@ Route::group(['prefix' => 'api/v1'], function()
                 Route::get('getDatesWithoutEntry', ['uses' => 'JournalController@getDatesWithoutEntry', 'as' => 'api.v1.journals.dates_without_entry']);
             });
             Route::resource('journals', 'JournalController', ['except' => ['create', 'edit']]);
-        });
+        // });
 
         Route::post('sessions', ['uses' => 'SessionController@store', 'as' => 'api.v1.sessions.login']);
         // Route::delete('sessions', ['uses' => 'SessionController@destroy', 'as' => 'api.v1.sessions.logout']);
