@@ -164,13 +164,14 @@ class JournalController extends \BaseController {
 
     public function getDatesWithoutEntry()
     {
-        $journals = Auth::user()->journals->toArray();
+        $user = User::find(Authorizer::getResourceOwnerId());
+        $journals = $user->journals->lists('publish_date');
         $dates_without_entry = [];
         $dates_with_entry = [];
 
         foreach ($journals as $journal)
         {
-            array_push($dates_with_entry, $journal['publish_date']);
+            array_push($dates_with_entry, $journal);
         }
 
         $period = new DatePeriod(
@@ -189,6 +190,6 @@ class JournalController extends \BaseController {
             }
         }
 
-        return Response::json($dates_without_entry, 200);
+        return Response::json([$dates_without_entry], 200);
     }
 }
