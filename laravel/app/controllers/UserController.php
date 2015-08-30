@@ -13,7 +13,7 @@ class UserController extends \BaseController {
 	{
 		$users = User::all();
 
-        return Response::json($users, 200);
+        return Response::json(['users' => $users], 200);
 	}
 
 	/**
@@ -53,7 +53,7 @@ class UserController extends \BaseController {
 
         return Response::json(array(
             'message'   => 'The resource has been successfuly created',
-            'data'      => $user,
+            'users'      => $user,
         ), 201);
 	}
 
@@ -68,7 +68,7 @@ class UserController extends \BaseController {
 	{
 		$user = User::findOrFail($id);
 
-        return Response::json($user, 200);
+        return Response::json(['users' => $user], 200);
 	}
 
 	/**
@@ -104,7 +104,7 @@ class UserController extends \BaseController {
 
         return Response::json(array(
             'message'   => 'The resource has been successfuly updated',
-            'data'      => $user,
+            'users'      => $user,
         ), 200);
 	}
 
@@ -123,6 +123,4 @@ class UserController extends \BaseController {
             'message'   => 'The resource has been deleted'
         ), 204);
 	}
-
-
 }

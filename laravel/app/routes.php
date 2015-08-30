@@ -14,7 +14,7 @@
 Route::group(['prefix' => 'api/v1'], function()
 {
     Route::post('oauth/access_token', function() {
-        return Response::json(Authorizer::issueAccessToken());
+        return Response::json(Authorizer::issueAccessToken(), 200);
     });
 
     Route::group(['before' => 'oauth'], function()
