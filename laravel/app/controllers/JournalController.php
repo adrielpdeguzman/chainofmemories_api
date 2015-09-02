@@ -11,7 +11,7 @@ class JournalController extends \BaseController {
 	 */
 	public function index()
 	{
-		$journals = Journal::orderBy('publish_date')->get();
+		$journals = Journal::orderBy('publish_date')->with('user')->get();
 
         return Response::json(['journals' => $journals], 200);
 	}
@@ -44,7 +44,7 @@ class JournalController extends \BaseController {
         $journal = new Journal();
         $journal->user_id = Authorizer::getResourceOwnerId();
         $journal->publish_date = Carbon::parse($request['publish_date']);
-        $journal->volume = $journal->publish_date->diffInMonths(Config::get('constants.ANNIVERSARY')) + (Config::get('constants.ANNIVERSARY')->day != $journal->publish_date->day ? 2 : 3);
+        $journal->volume = $journal->publish_date->diffInMonths(Config::get('constants.ANNIVERSARY')) + 2;
         $journal->day = $journal->publish_date->diffInDays(Config::get('constants.ANNIVERSARY')) + 1;
         $journal->contents = $request['contents'];
         $journal->special_events = array_key_exists('special_events', $request) ? $request['special_events'] : '';
@@ -82,7 +82,7 @@ class JournalController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$journal = Journal::findOrFail($id);
+		$journal = Journal::with('user')->findOrFail($id);
         $owner = false;
 
         if(Authorizer::getResourceOwnerId() == $journal->user_id)
@@ -163,6 +163,7 @@ class JournalController extends \BaseController {
         $volume = Request::get('volume');
 
         $journals = Journal::ofVolume($volume)
+                  ->with('user')
                   ->whereRaw('lower(contents) like ?', array($text))
                   ->orderBy('publish_date')
                   ->get();
@@ -172,14 +173,14 @@ class JournalController extends \BaseController {
 
     public function volume($volume)
     {
-        $journals = Journal::ofVolume($volume)->orderBy('publish_date')->get();
+        $journals = Journal::ofVolume($volume)->orderBy('publish_date')->with('user')->get()->toArray();
 
         return Response::json(['journals' => $journals], 200);
     }
 
     public function random()
     {
-        $journal = Journal::orderByRaw('RAND()')->first();
+        $journal = Journal::orderByRaw('RAND()')->with('user')->first();
         $owner = false;
 
         if(Authorizer::getResourceOwnerId() == $journal->user_id)

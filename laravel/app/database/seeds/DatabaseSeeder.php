@@ -58,7 +58,7 @@ class JournalTableSeeder extends Seeder {
 
             $journal->user_id = $faker->randomDigit();
             $journal->publish_date = Carbon::instance($faker->dateTimeBetween($startDate = Config::get('constants.ANNIVERSARY')));
-            $journal->volume = $journal->publish_date->diffInMonths(Config::get('constants.ANNIVERSARY')) + (Config::get('constants.ANNIVERSARY')->day != $journal->publish_date->day ? 2 : 3);
+            $journal->volume = $journal->publish_date->diffInMonths(Config::get('constants.ANNIVERSARY')) + 2;
             $journal->day = $journal->publish_date->diffInDays(Config::get('constants.ANNIVERSARY')) + 1;
             $journal->contents = implode("\n\n", $faker->paragraphs(5));
             $journal->special_events = implode("\n", $faker->sentences(2));
