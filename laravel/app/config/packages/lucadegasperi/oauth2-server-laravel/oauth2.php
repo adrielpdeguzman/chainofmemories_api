@@ -87,11 +87,11 @@ return [
                 }
                 return false;
             },
-            'access_token_ttl' => 604800
+            'access_token_ttl' => 3600
         ],
         'refresh_token' => [
             'class' => '\League\OAuth2\Server\Grant\RefreshTokenGrant',
-            'access_token_ttl' => 604800,
+            'access_token_ttl' => 3600,
             'refresh_token_ttl' => 604800
         ]
     ],

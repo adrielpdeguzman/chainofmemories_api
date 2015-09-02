@@ -180,8 +180,14 @@ class JournalController extends \BaseController {
     public function random()
     {
         $journal = Journal::orderByRaw('RAND()')->first();
+        $owner = false;
 
-        return Response::json(['journals' => $journal], 200);
+        if(Authorizer::getResourceOwnerId() == $journal->user_id)
+        {
+            $owner = true;
+        }
+
+        return Response::json(['journals' => $journal, 'isOwner' => $owner], 200);
     }
 
     public function getDatesWithoutEntry()
@@ -212,6 +218,19 @@ class JournalController extends \BaseController {
             }
         }
 
-        return Response::json($dates_without_entry, 200);
+        return Response::json(array_reverse($dates_without_entry), 200);
+    }
+
+    public function getVolumesWithStartDate()
+    {
+        $volumes = Journal::select('volume', 'publish_date')->groupBy('volume')->orderBy('volume', 'asc', 'publish_date', 'asc')->get()->lists('publish_date', 'volume');
+        $volumes_with_start_date = [];
+
+        foreach($volumes as $key=>$value)
+        {
+            $volumes_with_start_date[$key] = 'Volume ' . $key . ' ' . date('F\'y',strtotime($value));
+        }
+
+        return Response::json($volumes_with_start_date, 200);
     }
 }
